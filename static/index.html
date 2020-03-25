@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
+      integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk="
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>Smalltalk</title>
+  </head>
+  <body>
+    <div class="join-container">
+      <header class="join-header">
+        <h1><i class="fas fa-comments"></i> Smalltalk</h1>
+      </header>
+      <main class="join-main">
+        <form name="join-form" action="chat.html" onsubmit="return validate()">
+          <div class="form-control">
+            <label for="username">Username</label>
+            <input
+              type="text"
+              name="username"
+              id="username"
+              placeholder="Enter username..."
+              required
+            />
+          </div>
+          <div class="form-control">
+            <label for="room">Room</label>
+            <select name="room" id="room">
+              <option value="Area 51">Area 51</option>
+              <option value="Babes in Chatland">Babes in Chatland</option>
+              <option value="Backstreet Gurlz">Backstreet Gurlz</option>
+              <option value="Nerd Nerd">Nerd Nerd</option>
+              <option value="Smalltalk">Smalltalk</option>
+              <option value="To All the Boys I've Ever Hated"
+                >To All the Boys I've Ever Hated</option
+              >
+            </select>
+          </div>
+          <button type="submit" class="btn">Join</button>
+        </form>
+      </main>
+    </div>
+    <script>
+      function validate() {
+        if (!/\S/.test(document.forms['join-form']['username'].value))
+          return false;
+      }
+    </script>
+  </body>
+</html>
