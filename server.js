@@ -16,52 +16,55 @@ const botName = 'Smalltalk Bot';
 
 // Run when client connects
 io.on('connection', socket => {
-  socket.on('joinRoom', ({ username, room }) => {
-    const user = users.userJoin(socket.id, username, room);
+    socket.on('joinRoom', ({ username, room }) => {
+        const user = users.userJoin(socket.id, username, room);
 
-    socket.join(user.room);
+        socket.join(user.room);
 
-    // Welcome current user
-    socket.emit('message', formatMessage(botName, 'Welcome to Smalltalk!'));
+        // Welcome current user
+        socket.emit('message', formatMessage(botName, 'Welcome to Smalltalk!'));
 
-    // Broadcast when a user connects
-    socket.broadcast
-      .to(user.room)
-      .emit(
-        'message',
-        formatMessage(botName, `👋 ${user.username} has joined the chat`)
-      );
+        // Broadcast when a user connects
+        socket.broadcast
+            .to(user.room)
+            .emit(
+                'message',
+                formatMessage(
+                    botName,
+                    `👋 ${user.username} has joined the chat`
+                )
+            );
 
-    // Send users and room info
-    io.to(user.room).emit('roomUsers', {
-      room: user.room,
-      users: users.getRoomUsers(user.room)
+        // Send users and room info
+        io.to(user.room).emit('roomUsers', {
+            room: user.room,
+            users: users.getRoomUsers(user.room)
+        });
     });
-  });
 
-  // Listen for chatMessage
-  socket.on('chatMessage', msg => {
-    const user = users.getCurrentUser(socket.id);
-    io.to(user.room).emit('message', formatMessage(user.username, msg));
-  });
+    // Listen for chatMessage
+    socket.on('chatMessage', msg => {
+        const user = users.getCurrentUser(socket.id);
+        io.to(user.room).emit('message', formatMessage(user.username, msg));
+    });
 
-  // Runs when client disconnects
-  socket.on('disconnect', () => {
-    const user = users.userLeave(socket.id);
+    // Runs when client disconnects
+    socket.on('disconnect', () => {
+        const user = users.userLeave(socket.id);
 
-    if (user) {
-      io.to(user.room).emit(
-        'message',
-        formatMessage(botName, `😵 ${user.username} has left the chat`)
-      );
+        if (user) {
+            io.to(user.room).emit(
+                'message',
+                formatMessage(botName, `😵 ${user.username} has left the chat`)
+            );
 
-      // Send users and room info
-      io.to(user.room).emit('roomUsers', {
-        room: user.room,
-        users: users.getRoomUsers(user.room)
-      });
-    }
-  });
+            // Send users and room info
+            io.to(user.room).emit('roomUsers', {
+                room: user.room,
+                users: users.getRoomUsers(user.room)
+            });
+        }
+    });
 });
 
 const PORT = 3000 || process.env.PORT;
